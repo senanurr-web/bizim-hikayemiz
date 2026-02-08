@@ -10,8 +10,10 @@ body {
   background: linear-gradient(#fdecef, #fffafc);
   text-align: center;
   padding: 20px;
+  margin: 0;
   overflow-x: hidden;
-  owerflow-y: auto;
+  overflow-y: auto;
+  min-height: 200vh;
 }
 
 h1 {
@@ -55,14 +57,21 @@ button {
 .heart {
   position: fixed;
   bottom: -40px;
-  font-size: 28px;
+  font-size: 30px;
   animation: floatUp 6s linear forwards;
-  z-index: 999;
+  z-index: 9999;
+  pointer-events: none;
 }
 
 @keyframes floatUp {
-  from { transform: translateY(0) scale(1); opacity: 1; }
-  to { transform: translateY(-120vh) scale(1.4); opacity: 0; }
+  from {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-120vh) scale(1.4);
+    opacity: 0;
+  }
 }
 
 #finalMessage {
@@ -105,7 +114,8 @@ button {
     ve bir mesaj daha gelsin diye beklemeyi seviyordum.<br><br>
 
     Sonra anonimlik kayboldu; mesajlar uzadı,
-    geceler sabahlara karıştı.Belki de biz, birbirimize karıştık..<br><br>
+    geceler sabahlara karıştı.
+    Belki de biz, birbirimize karıştık..<br><br>
 
     Ve zaman geçtikçe fark ettim ki,
     bu his geçmiyor.<br><br>
@@ -121,12 +131,11 @@ button {
 <div class="section">
   <p>
     İlk buluşmamızda o kadar heyecanlıydım ki
-    sipariş almaya gelen adama
-    “sonra söyleriz” demem gerekirken<br><br>
+    sipariş almaya gelen adama<br><br>
 
     <b>“Sonra ararız biz sizi”</b> dedim.<br><br>
 
-    Rezillikti, utanmıştım baya.Sanki yanında zaten utanmıyormuşum gibi..
+    Rezillikti, utanmıştım baya.
     Ama o an anlamıştım;<br><br>
 
     <b>Sana çoktan kapılmıştım ben.🤍</b>
@@ -143,7 +152,7 @@ button {
 </div>
 
 <div class="section">
-  <h3>📸 Biz</h3>
+  <h3>📸 Biriciğimlee🤍</h3>
   <div class="gallery">
     <img src="foto1.jpg">
     <img src="foto2.jpg">
@@ -167,44 +176,36 @@ button {
 function startGame() {
   let score = 0;
 
-  let q1 = prompt("Tanışma yıldönümümüzü hatılıyor musun bakalım beyefendi?");
-  if(q1 && q1.toLowerCase().includes("21.08.2020")) score++;
+  let q1 = prompt("Tanışma yıldönümümüzü hatırlıyor musun?");
+  if (q1 && q1.includes("2020")) score++;
 
-  let q2 = prompt("İlk izlediğimiz film neydi? Ayrı ayrı ama bir o kadar da yakın.");
-  if(q2 && q2.toLowerCase().includes("Senden Önce Ben")) score++;
+  let q2 = prompt("İlk izlediğimiz film neydi?");
+  if (q2 && q2.toLowerCase().includes("senden")) score++;
 
-  if(score >= 1) {
+  if (score >= 1) {
     showHearts();
   } else {
-    alert("Puanı falan boşver, sen benim kalbimin her köşesini kazanmışsın yıllar önce..");
+    alert("Puan önemli değil, kalbim zaten senin 🤍");
   }
 }
 
 function showHearts() {
-  const msg = document.getElementById("finalMessage");
-  msg.classList.add("show");
+  document.getElementById("finalMessage").classList.add("show");
 
-  for(let i = 0; i < 80; i++) {
-    setTimeout(createHeart, i * 100);
+  for (let i = 0; i < 80; i++) {
+    setTimeout(createHeart, i * 120);
   }
 }
 
-<script>
 function createHeart() {
   const heart = document.createElement("div");
   heart.className = "heart";
   heart.innerHTML = "❤️";
-
   heart.style.left = Math.random() * 100 + "vw";
-
   document.body.appendChild(heart);
 
-  setTimeout(() => {
-    heart.remove();
-  }, 6000);
+  setTimeout(() => heart.remove(), 6000);
 }
-
-setInterval(createHeart, 500);
 </script>
 
 </body>
