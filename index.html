@@ -10,8 +10,8 @@ body {
   background: linear-gradient(#fdecef, #fffafc);
   text-align: center;
   padding: 20px;
-  margin: 0;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 h1 {
@@ -34,7 +34,7 @@ button {
   padding: 14px 30px;
   border-radius: 30px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 15px;
 }
 
 .gallery {
@@ -51,25 +51,41 @@ button {
   border-radius: 18px;
 }
 
-/* ❤️ KALPLER */
+/* ❤️ CSS KALP */
 .heart {
   position: fixed;
-  bottom: -30px;
-  font-size: 32px;
-  animation: fly 5s linear forwards;
-  pointer-events: none;
+  bottom: -20px;
+  width: 20px;
+  height: 20px;
+  background: #e63946;
+  transform: rotate(45deg);
+  animation: floatUp 6s linear forwards;
   z-index: 9999;
 }
 
-@keyframes fly {
-  from {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateY(-120vh);
-    opacity: 0;
-  }
+.heart::before,
+.heart::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: #e63946;
+  border-radius: 50%;
+}
+
+.heart::before {
+  top: -10px;
+  left: 0;
+}
+
+.heart::after {
+  left: -10px;
+  top: 0;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0) rotate(45deg); opacity: 1; }
+  to { transform: translateY(-120vh) rotate(45deg); opacity: 0; }
 }
 
 #finalMessage {
@@ -82,10 +98,9 @@ button {
   font-weight: bold;
   opacity: 0;
   z-index: 10000;
-}
-
-.show {
-  opacity: 1;
+  text-align: center;
+  padding: 20px;
+  transition: opacity 2s;
 }
 </style>
 </head>
@@ -97,11 +112,20 @@ button {
 <div class="section">
   <p>
     <b>2020 yılında Tumblr’da başladı her şey.</b><br><br>
-    Anonim mesajlar, gecelere karışan sohbetler
-    ve adını bilmeden hissettiklerini tanıdığım biri…<br><br>
+    Tanımadığım birinden gelen,
+    adını bilmediğim ama hissettirdiklerini hemen tanıdığım
+    anonim mesajlarla..<br><br>
 
-    Zaman geçti, anonimlik gitti
-    ama heyecan hiç gitmedi.<br><br>
+    O zamanlar bunun bir hikâyeye dönüşeceğini bilmiyordum.
+    Sadece okumayı, cevap vermeyi
+    ve bir mesaj daha gelsin diye beklemeyi seviyordum.<br><br>
+
+    Sonra anonimlik kayboldu; mesajlar uzadı,
+    geceler sabahlara karıştı. Belki de biz,
+    birbirimize karıştık..<br><br>
+
+    Ve zaman geçtikçe fark ettim ki,
+    bu his geçmiyor.<br><br>
 
     Bugün hâlâ,
     adını ekranda gördüğümde
@@ -113,23 +137,25 @@ button {
 
 <div class="section">
   <p>
-    İlk buluşmada o kadar heyecanlıydım ki
-    garsona “sonra söyleriz” demek yerine<br><br>
+    İlk buluşmamızda o kadar heyecanlıydım ki
+    sipariş almaya gelen adama
+    “sonra söyleriz” demem gerekirken<br><br>
 
     <b>“Sonra ararız biz sizi”</b> dedim.<br><br>
 
-    Utanmıştım ama anlamıştım:
-    <b>Sana çoktan kapılmıştım.🤍</b>
+    Rezillikti, utanmıştım baya.
+    Ama o an anlamıştım;<br><br>
+
+    <b>Sana çoktan kapılmıştım ben.🤍</b>
   </p>
 </div>
 
 <div class="section">
   <h3>🎵 Bizim Şarkımız</h3>
-  <iframe
+  <iframe style="border-radius:12px"
     src="https://open.spotify.com/embed/track/5yoW8adECpBjG1em4xsaUX"
     width="100%" height="80"
-    style="border-radius:12px"
-    allow="encrypted-media">
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen;">
   </iframe>
 </div>
 
@@ -146,33 +172,50 @@ button {
 
 <div class="section">
   <h3>🎮 Mini Oyun</h3>
-  <button onclick="start()">Hazırım 🤍</button>
+  <button onclick="startGame()">Hazırım 🤍</button>
 </div>
 
 <div id="finalMessage">
   Sevgililer Günümüz kutlu olsun bitanem 🤍<br>
-  Seni çok seviyorum.
+  Seni çok, seni hep en çok şiir gözlü adamım.🤍
 </div>
 
 <script>
-function start() {
-  document.getElementById("finalMessage").classList.add("show");
+function startGame() {
+  let score = 0;
 
-  for (let i = 0; i < 100; i++) {
-    setTimeout(makeHeart, i * 100);
+  let q1 = prompt("Tanışma yıldönümümüzü hatırlıyor musun bakalım beyefendi?");
+  if(q1 && q1.includes("21.08.2020")) score++;
+
+  let q2 = prompt("İlk izlediğimiz film neydi? Ayrı ayrı ama bir o kadar da yakın.");
+  if(q2 && q2.toLowerCase().includes("senden önce ben")) score++;
+
+  if(score >= 1) {
+    showHearts();
+  } else {
+    alert("Puanı boşver.. sen benim kalbimi yıllar önce kazanmıştın zaten 🤍");
   }
 }
 
-function makeHeart() {
+function showHearts() {
+  const msg = document.getElementById("finalMessage");
+
+  for(let i = 0; i < 80; i++) {
+    setTimeout(createHeart, i * 100);
+  }
+
+  setTimeout(() => {
+    msg.style.opacity = 1;
+  }, 3000);
+}
+
+function createHeart() {
   const heart = document.createElement("div");
   heart.className = "heart";
-  heart.innerHTML = "❤️";
   heart.style.left = Math.random() * 100 + "vw";
   document.body.appendChild(heart);
 
-  setTimeout(() => {
-    heart.remove();
-  }, 5000);
+  setTimeout(() => heart.remove(), 6000);
 }
 </script>
 
